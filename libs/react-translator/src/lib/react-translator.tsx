@@ -1,4 +1,4 @@
-import { useLocalState } from "@oneforx/hooks-contexts"
+import { useLocalState } from "@oneforx/poseidon"
 import React, { createContext, useCallback, useMemo, useState } from "react"
 
 interface ReactTranslatorContextProps {
@@ -36,10 +36,10 @@ export const ReactTranslatorContextProvider = ({ locales, children }: IReactTran
 
   const translatePhraseKey = useCallback(( phraseKey: string ): string => {
     return locales[phraseKey]["fr"];
-  }, [ locales, lang ]);
+  }, [ locales ]);
 
   const translated = useMemo((): Record<string, string > => {
-    let newObj: Record<string, string> = {}
+    const newObj: Record<string, string> = {}
     Object.keys(locales).forEach( lk => {
       newObj[lk] = translatePhraseKey(lk);
     })
