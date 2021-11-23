@@ -142,10 +142,10 @@ const traductorReducer = (
     case TraductorConstants.IMPORT_SENTENCES: {
       if (typeof action.payload !== "undefined" && typeof action.payload !== "string" ) {
         if (typeof action.payload.sentences !== "undefined" && typeof action.payload.sentences === "object") {
-          let newSentences: ISentences = {}
+          const newSentences: ISentences = {}
           Object.keys(action.payload.sentences).forEach((sk) => {
             if (Object.values(state.sentences).filter((sv) => sv.sentenceName === sk).length < 1) {
-              var sentenceTraductions = typeof action.payload !== "string" ? typeof action.payload.sentences === "object" ? typeof action.payload.sentences[sk] : {} : {}
+              const sentenceTraductions = typeof action.payload !== "string" ? typeof action.payload.sentences === "object" ? typeof action.payload.sentences[sk] : {} : {}
               newSentences[uuid.get()] = {
                 sentenceName: sk,
                 sentenceTraductions
@@ -200,7 +200,7 @@ export default function CreateTraductionScreen () {
       type: TraductorConstants.MODIFY_SENTENCE_NAME,
       payload: { sentenceId, sentenceName: e.target.value }
     })
-  }, [ currentSentenceId ]);
+  }, []);
 
   const handleOnChangeSentenceContent = useCallback((e) => {
     dispatch({
@@ -224,10 +224,10 @@ export default function CreateTraductionScreen () {
   }, [])
 
   const stringifiedLocales = useMemo(() => JSON.stringify( sentences, null, 4), [ sentences ]);
-  const stringifiedParsedLocales = useMemo(() => JSON.stringify(pipeToContext( sentences )), [ sentences ]);
+  const stringifiedParsedLocales = useMemo(() => JSON.stringify(pipeToContext( sentences )), [pipeToContext, sentences]);
 
   const handleOnClickExport = useCallback(() => {
-    var file = document.createElement("a");
+    const file = document.createElement("a");
     file.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(stringifiedParsedLocales))
     file.setAttribute('download', fileName + ".json")
     file.click();
@@ -235,7 +235,7 @@ export default function CreateTraductionScreen () {
   //#endregion
 
   const importTraductionFile = useCallback(() => {
-    var input = document.createElement("input");
+    const input = document.createElement("input");
     input.setAttribute('type', 'file');
     input.setAttribute('accept', '.json');
 
@@ -244,8 +244,8 @@ export default function CreateTraductionScreen () {
       if (target) {
         if (target.files) {
           if (target.files.length > 0) {
-            var file = target.files[0]
-            var reader = new FileReader()
+            const file = target.files[0]
+            const reader = new FileReader()
             reader.onload = (e) => dispatch({
               type: TraductorConstants.IMPORT_SENTENCES,
               payload: { sentences: JSON.parse(e.target?.result as string) }
@@ -327,12 +327,12 @@ export default function CreateTraductionScreen () {
             </div>
 
             <textarea
-              disabled={ !!!currentSentenceFlagCode }
+              disabled={ !currentSentenceFlagCode }
               value={ typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" && currentSentenceFlagCode !== undefined && typeof  sentences[currentSentenceId].sentenceTraductions !== "undefined" ? sentences[currentSentenceId].sentenceTraductions[currentSentenceFlagCode] : ""}
               onChange={handleOnChangeSentenceContent}
               style={{ width: "100%", padding: "2px" }}
               className="disabled:bg-gray-200 p-4 flex-1 border-none active:border-none  focus:outline-none"
-              placeholder={!!currentSentenceFlagCode ? "Salut le monde" : "Please select a flag to edit"}>
+              placeholder={currentSentenceFlagCode ? "Salut le monde" : "Please select a flag to edit"}>
             </textarea>
             </div>
 
