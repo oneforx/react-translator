@@ -1,4 +1,8 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "react-translator": "libs/react-translator",
+    "react-translator-front": "apps/react-translator-front",
+    "react-translator-front-e2e": "apps/react-translator-front-e2e"
+  }
 }

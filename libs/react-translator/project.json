@@ -1,0 +1,42 @@
+{
+  "root": "libs/react-translator",
+  "sourceRoot": "libs/react-translator/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/react-translator",
+        "tsConfig": "libs/react-translator/tsconfig.lib.json",
+        "project": "libs/react-translator/package.json",
+        "entryFile": "libs/react-translator/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "assets": [
+          {
+            "glob": "libs/react-translator/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/react-translator/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/react-translator"],
+      "options": {
+        "jestConfig": "libs/react-translator/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

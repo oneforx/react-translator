@@ -1,7 +1,7 @@
 This library was generated with [Nx](https://nx.dev).
 
 # @oneforx/react-translator
-This library is intent to be used as a translator of predefined json file that can be created with [react-translator-gui](https://oneforx.github.io/react-translator/) website
+This library is intent to be used as a translator of predefined json file that can be created with [react-translator-gui](https://oneforx.net/react-translator/) website
 
 ## locales.json
 ```json 
