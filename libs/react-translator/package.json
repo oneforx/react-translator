@@ -1,6 +1,6 @@
 {
   "name": "@oneforx/react-translator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "dependencies": {
     "@oneforx/poseidon": "^0.1.2"
   }

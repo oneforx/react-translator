@@ -34,7 +34,7 @@ const FlagList = ({
         </div>
       );
     }) : null,
-    [ response, flagSelected, flagCodesUsedInSentence ]
+    [response.data, searchFlag, flagCodesUsedInSentence, flagSelected, onClickFlag, onClickDeleteLanguage]
   );
 
   const handleSearchFlagChange = useCallback((e) => {

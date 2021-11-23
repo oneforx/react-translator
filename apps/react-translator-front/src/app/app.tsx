@@ -1,9 +1,9 @@
 import CreateTraductionScreen from './screens/CreateTraductionScreen';
 
-export function App() {
+export function app() {
   return (
     <CreateTraductionScreen />
   );
 }
 
-export default App;
+export default app;
