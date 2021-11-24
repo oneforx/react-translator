@@ -43,7 +43,7 @@ const initialState: IInitialState = {
 }
 
 const deleteSentence = ( state: IInitialState, sentenceId: string ) => {
-  return ({ ...state, currentSentenceId: undefined, sentences: omit(state.sentences, sentenceId) })
+  return ({ ...state, currentSentenceId: undefined, sentences: omit({ obj: state.sentences, keyName: sentenceId }) })
 }
 
 const traductorReducer = (
@@ -67,7 +67,7 @@ const traductorReducer = (
             ...state.sentences,
             [state.currentSentenceId]: {
               ...state.sentences[state.currentSentenceId],
-              sentenceTraductions: omit<Record<string, string>>(state.sentences[state.currentSentenceId].sentenceTraductions, action.payload)
+              sentenceTraductions: omit<Record<string, string>>({ obj: state.sentences[state.currentSentenceId].sentenceTraductions, keyName: action.payload })
             }
           }
         })
@@ -145,13 +145,14 @@ const traductorReducer = (
           const newSentences: ISentences = {}
           Object.keys(action.payload.sentences).forEach((sk) => {
             if (Object.values(state.sentences).filter((sv) => sv.sentenceName === sk).length < 1) {
-              const sentenceTraductions = typeof action.payload !== "string" ? typeof action.payload.sentences === "object" ? typeof action.payload.sentences[sk] : {} : {}
+              const sentenceTraductions = typeof action.payload !== "string" ? typeof action.payload.sentences === "object" ? action.payload.sentences[sk] : {} : {}
               newSentences[uuid.get()] = {
                 sentenceName: sk,
                 sentenceTraductions
               }
             }
           })
+          console.log(newSentences)
           return { ...state, sentences: {...state.sentences, ...newSentences }}
         } else return state
       } else return state
@@ -246,10 +247,13 @@ export default function CreateTraductionScreen () {
           if (target.files.length > 0) {
             const file = target.files[0]
             const reader = new FileReader()
-            reader.onload = (e) => dispatch({
-              type: TraductorConstants.IMPORT_SENTENCES,
-              payload: { sentences: JSON.parse(e.target?.result as string) }
-            });
+            reader.onload = (e) => {
+              console.log(JSON.parse(e.target?.result as string));
+              dispatch({
+                type: TraductorConstants.IMPORT_SENTENCES,
+                payload: { sentences: JSON.parse(e.target?.result as string) }
+              });
+            }
             reader.readAsText(file, "utf-8");
           }
         }
@@ -343,15 +347,18 @@ export default function CreateTraductionScreen () {
             {stringifiedLocales}
             </pre>
           </div> :
-          <div className="flex-1 flex flex-col items-center">
-            <h1 className="text-3xl">React Traductor</h1>
+          <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
+            <h1 className="text-9xl py-10">React Traductor</h1>
 
-            <div className="bg-blue-400 text-white rounded px-2 py-1">
-              <pre lang="bash">
-                npm install @oneforx/react-traductor
+            <div className="bg-gray-700 text-white rounded px-5 py-2">
+              <pre lang="bash" className="text-xl">
+                npm install @oneforx/react-translator
               </pre>
               <div>
                 <i className="fad fa-copy"></i>
+              </div>
+              <div className="text-gray-500 italic">
+                Click on {translated["new_sentence_key"]} to start
               </div>
             </div>
           </div>

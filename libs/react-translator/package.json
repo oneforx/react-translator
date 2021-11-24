@@ -1,6 +1,11 @@
 {
   "name": "@oneforx/react-translator",
-  "version": "0.0.5",
+  "version": "0.0.6",
+  "author": {
+    "email": "contact@oneforx.net",
+    "name": "oneforx",
+    "url": "https://oneforx.github.io/react-translator/"
+  },
   "dependencies": {
     "@oneforx/poseidon": "^0.1.2"
   }

@@ -1,10 +1,12 @@
-function omit <T extends Record<string, unknown>> ( obj: T, keyName = "" ): T {
-  return Object.keys(obj).reduce((object: any, key: string) => {
+function omit <T extends Record<string, unknown>> ({ obj, keyName = "" }: { obj: T; keyName?: string; }): T {
+  const test = Object.keys(obj).reduce((object: any, key: string) => {
     if (key !== keyName) {
       object[key] = obj[key];
     }
     return object
   }, {})
+  console.log(test)
+  return test
 }
 
 class uuid {
