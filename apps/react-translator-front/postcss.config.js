@@ -1,6 +1,8 @@
 module.exports = {
   plugins: {
-    tailwindcss: {},
+    tailwindcss: {
+      config: './apps/react-translator-front/tailwind.config.js'
+    },
     autoprefixer: {},
   },
 }
