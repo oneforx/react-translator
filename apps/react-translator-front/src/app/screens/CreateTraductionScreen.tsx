@@ -242,7 +242,7 @@ export default function CreateTraductionScreen () {
     file.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(stringifiedParsedLocales))
     file.setAttribute('download', fileName + ".json")
     file.click();
-  }, [fileName, stringifiedParsedLocales]);
+  }, [ fileName, stringifiedParsedLocales ]);
   //#endregion
 
   const importTraductionFile = useCallback(() => {
