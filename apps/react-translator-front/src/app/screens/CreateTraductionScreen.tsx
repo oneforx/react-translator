@@ -1,5 +1,5 @@
 import { ReactTranslatorContext } from "@oneforx/react-translator";
-import { useCallback, useContext, useMemo, useReducer, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import FlagList from "../components/FlagList";
 import { omit, uuid } from '../utils'
 
@@ -42,10 +42,6 @@ const initialState: IInitialState = {
   sentences: {}
 }
 
-const deleteSentence = ( state: IInitialState, sentenceId: string ) => {
-  return ({ ...state, currentSentenceId: undefined, sentences: omit({ obj: state.sentences, keyName: sentenceId }) })
-}
-
 const traductorReducer = (
   state = initialState,
   action: {
@@ -55,8 +51,16 @@ const traductorReducer = (
 ): IInitialState => {
   switch ( action.type ) {
     case TraductorConstants.DELETE_SENTENCE: {
-      if ( typeof action.payload === "string" )
-        return deleteSentence( state, action.payload )
+      if ( typeof action.payload === "string" ) {
+        if ( state.sentences[action.payload] !== undefined ) {
+          const { [action.payload]: value, ...sentences } = state.sentences
+          return ({
+            ...state,
+            currentSentenceId: state.currentSentenceId === action.payload ? undefined : state.currentSentenceId,
+            sentences: sentences
+          })
+        } else return state;
+      }
       else return state;
     }
     case TraductorConstants.DELETE_TRADUCTION_SENTENCE: {
@@ -136,7 +140,14 @@ const traductorReducer = (
     }
     case TraductorConstants.SELECT_SENTENCE: {
       if (typeof action.payload === "string") {
-        return ({ ...state, currentSentenceId: action.payload })
+        if ( action.payload !== "" ) {
+          // SI ACTION.PAYLOAD.ID === CURRENT SENTENCE ID => undefined
+          if ( action.payload === state.currentSentenceId || state.sentences[action.payload] === undefined )
+            return ({ ...state, currentSentenceId: undefined })
+          // ELSE
+          else return ({ ...state, currentSentenceId: action.payload })
+        } else return state;
+
       } else return state;
     }
     case TraductorConstants.IMPORT_SENTENCES: {
@@ -152,7 +163,6 @@ const traductorReducer = (
               }
             }
           })
-          console.log(newSentences)
           return { ...state, sentences: {...state.sentences, ...newSentences }}
         } else return state
       } else return state
@@ -270,6 +280,22 @@ export default function CreateTraductionScreen () {
     });
   }, []);
 
+  const handleOnClickOnKey = useCallback((ev) => {
+    if (ev.keyCode === 32 ) {
+      if (Object.keys(sentences).length === 0) {
+        addSentence("undefined");
+      }
+    }
+  }, [ sentences, addSentence ]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleOnClickOnKey);
+    return () => {
+      window.removeEventListener("keydown", handleOnClickOnKey);
+    }
+  }, [])
+
+
   return (
     <div className="h-full flex flex-row">
       {/** LEFT PANE */}
@@ -284,7 +310,7 @@ export default function CreateTraductionScreen () {
               Object.keys(sentences).map((v, idx) => <li
                 key={v}
                 className={[ "p-2", "flex flex-row justify-between cursor-pointer", currentSentenceId === v ? "font-bold bg-gray-100" : "", idx % 2 === 0 ? "bg-gray-50" : ""].join(" ") }
-                onClick={() => dispatch({ type: TraductorConstants.SELECT_SENTENCE, payload: currentSentenceId === v ? "" : v })}>
+                onClick={() => dispatch({ type: TraductorConstants.SELECT_SENTENCE, payload: v })}>
                   <span className="truncate">{sentences[v].sentenceName}</span> <button className="px-2" onClick={() => deleteSentence(v)}>x</button>
               </li>
             )}
@@ -357,9 +383,10 @@ export default function CreateTraductionScreen () {
               <div>
                 <i className="fad fa-copy"></i>
               </div>
-              <div className="text-gray-500 italic">
-                Click on {translated["new_sentence_key"]} to start
-              </div>
+            </div>
+
+            <div className="text-gray-500 italic my-10z">
+              {translated["how_to_start_key"]}
             </div>
           </div>
         }
