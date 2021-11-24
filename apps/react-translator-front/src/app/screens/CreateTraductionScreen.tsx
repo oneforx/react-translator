@@ -293,6 +293,7 @@ export default function CreateTraductionScreen () {
     return () => {
       window.removeEventListener("keydown", handleOnClickOnKey);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

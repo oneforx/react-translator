@@ -6,6 +6,10 @@
     "name": "oneforx",
     "url": "https://oneforx.github.io/react-translator/"
   },
+  "repository": {
+    "directory": "/tree/master/libs/react-translator",
+    "url": "https://github.com/oneforx/react-translator"
+  },
   "dependencies": {
     "@oneforx/poseidon": "^0.1.2"
   }

@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "NX_BASE_HREF=/react-translator/ nx build --prod --baseHref=/react-translator/",
+    "build-front": "NX_BASE_HREF=/react-translator/ nx build --prod --baseHref=/react-translator/",
+    "build": "nx build",
     "test": "nx test",
     "publish": "pnpm run build react-translator && cd dist/libs/react-translator && npm publish --scope=@oneforx/react-translator --access=public",
     "deploy": "gh-pages -d dist/apps/react-translator-front",
