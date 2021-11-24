@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
 
 import EditorController from '../controllers/EditorController';
 import MainController from '../controllers/MainController';
@@ -7,7 +7,7 @@ import EditorMainScreen from '../screens/editor/EditorMainScreen';
 
 const IndexRouter = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={ <MainController /> }>
           <Route path="" element={<div>MainScreen</div>} />
@@ -18,7 +18,7 @@ const IndexRouter = () => {
           <Route path=":id" element={ <EditorIdScreen /> } />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

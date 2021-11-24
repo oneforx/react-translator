@@ -7,7 +7,7 @@ const EditorController = () => {
 
   const sbCn = useMemo(
     () => "border-r border-gray-300 flex flex-col"
-  , [ sidebarCollapsed ]);
+  , []);
 
   const sbItemCn = useMemo(
     () => "cursor-pointer hover:bg-gray-100 ".concat( sidebarCollapsed ? "px-4 py-2 text-center" : "flex flex-row" )
