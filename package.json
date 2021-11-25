@@ -9,7 +9,7 @@
     "test": "nx test",
     "publish": "pnpm run build react-translator && cd dist/libs/react-translator && npm publish --scope=@oneforx/react-translator --access=public",
     "deploy": "gh-pages -d dist/apps/react-translator-front",
-    "db": "pnpm run build && pnpm run deploy"
+    "pubdep": "pnpm run build-front && pnpm run deploy"
   },
   "dependencies": {
     "@oneforx/poseidon": "^0.1.2",

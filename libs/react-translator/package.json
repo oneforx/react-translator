@@ -1,14 +1,19 @@
 {
   "name": "@oneforx/react-translator",
-  "version": "0.0.6",
+  "version": "0.0.7",
+  "license": "MIT",
+  "homepage": "https://oneforx.github.io/react-translator",
   "author": {
     "email": "contact@oneforx.net",
     "name": "oneforx",
-    "url": "https://oneforx.github.io/react-translator/"
+    "url": "https://oneforx.net/"
   },
   "repository": {
     "directory": "/tree/master/libs/react-translator",
     "url": "https://github.com/oneforx/react-translator"
+  },
+  "engines": {
+    "node": ">= v12.18.4"
   },
   "dependencies": {
     "@oneforx/poseidon": "^0.1.2"

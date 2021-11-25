@@ -375,7 +375,7 @@ export default function CreateTraductionScreen () {
             </pre>
           </div> :
           <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
-            <h1 className="text-9xl py-10">React Traductor</h1>
+            <h1 className="text-9xl py-10">React Translator</h1>
 
             <div className="bg-gray-700 text-white rounded px-5 py-2">
               <pre lang="bash" className="text-xl">
@@ -386,7 +386,7 @@ export default function CreateTraductionScreen () {
               </div>
             </div>
 
-            <div className="text-gray-500 italic my-10z">
+            <div className="text-gray-500 italic my-10">
               {translated["how_to_start_key"]}
             </div>
           </div>
