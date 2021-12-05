@@ -1,15 +1,11 @@
 import { ReactTranslatorContext } from "@oneforx/react-translator";
 import { useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { ISentences } from "../../types";
 import FlagList from "../components/FlagList";
 import { omit, uuid } from '../utils'
 
 //#region types / enum / interfaces
-export type ISentences = {
-  [key: string]: {
-    sentenceName?: string,
-    sentenceTraductions: Record<string, string>
-  }
-}
+
 
 enum TraductorConstants {
   ADD_SENTENCE,
