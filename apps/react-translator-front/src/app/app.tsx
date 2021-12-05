@@ -1,8 +1,14 @@
-import CreateTraductionScreen from './screens/CreateTraductionScreen';
+import AppContextProvider from './contexts/AppContext';
+import EditorContextProvider from './contexts/EditorContext';
+import IndexRouter from './routers/IndexRouter';
 
 export function app() {
   return (
-    <CreateTraductionScreen />
+    <AppContextProvider>
+      <EditorContextProvider>
+        <IndexRouter />
+      </EditorContextProvider>
+    </AppContextProvider>
   );
 }
 

@@ -6,7 +6,6 @@ import { omit, uuid } from '../utils'
 
 //#region types / enum / interfaces
 
-
 enum TraductorConstants {
   ADD_SENTENCE,
   MODIFY_SENTENCE_NAME,

@@ -32,13 +32,8 @@ const EditorController = () => {
       {/**#endregion */}
 
       {/**#region Screens */}
-      <div>
-        <EditorContextProvider>
-          <Outlet />
-        </EditorContextProvider>
-      </div>
+      <Outlet />
       {/**#endregion */}
-
     </div>
   );
 }

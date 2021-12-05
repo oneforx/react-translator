@@ -81,7 +81,6 @@ const EditorContextProvider = ({ children }: IEditorProps) => {
     }
   }, []);
 
-
   return (
     <EditorContext.Provider value={{
       currentProjectsId: editorState.currentProjectsId,
