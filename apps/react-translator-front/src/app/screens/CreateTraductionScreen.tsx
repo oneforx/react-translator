@@ -327,7 +327,7 @@ export default function CreateTraductionScreen () {
             <div className="flex flex-1 flex-col overflow-auto">
 
             {/** FLAG LIST */}
-            <div className="flex overflow-auto pt-16 relative h-[195px] overscroll-auto">
+            <div className="flex overflow-auto pt-16 relative overscroll-auto">
               <FlagList
                 flagCodesUsedInSentence={flagCodesUsedInSentence}
                 flagSelected={currentSentenceFlagCode}
@@ -362,11 +362,10 @@ export default function CreateTraductionScreen () {
             </textarea>
             </div>
 
-            <div className="border-t flex border-gray-100" style={{ height: "320px" }}>
+            <div className="border-t flex border-gray-100" style={{ maxHeight: "320px" }}>
               <pre
               lang="json"
-              className={"p-2 h-64 overflow-auto"}
-              style={{ height: `320px` }}>
+              className={"p-2 overflow-auto"}>
               {stringifiedLocales}
               </pre>
             </div>

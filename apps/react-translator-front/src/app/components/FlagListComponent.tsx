@@ -44,7 +44,7 @@ const FlagList = ({
 
   if ( response.isLoading ) return <p>FlagList is loading</p>
   else return (
-    <div className="p-2 flex flex-1 flex-col flex-wrap overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
+    <div className="p-2 flex flex-1 flex-col flex-wrap flex-grow overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
       <div className="p-2 absolute top-0 left-4 flex items-center">
         <input className="p-2 border" placeholder="fr,france" value={searchFlag} onChange={handleSearchFlagChange}></input>
         <Tag bgColor="red" bgOpacity="900">Used</Tag>

@@ -3,7 +3,7 @@ const { join } = require('path');
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: [
+  content: [
     join(__dirname, 'src/app/**/**/**/*.{js,ts,jsx,tsx}'),
     join(__dirname, 'src/app/**/**/*.{js,ts,jsx,tsx}'),
     join(__dirname, 'src/app/**/*.{js,ts,jsx,tsx}'),
