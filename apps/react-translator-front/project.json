@@ -4,7 +4,7 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:build",
+      "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
@@ -43,7 +43,8 @@
       "executor": "@nrwl/web:dev-server",
       "options": {
         "buildTarget": "react-translator-front:build",
-        "hmr": true
+        "hmr": true,
+        "proxyConfig": "apps/react-translator-front/proxy.conf.json"
       },
       "configurations": {
         "production": {

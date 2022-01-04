@@ -1,7 +1,7 @@
 import { ReactTranslatorContext } from "@oneforx/react-translator";
 import { useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { ISentences } from "../../types";
-import FlagList from "../components/FlagList";
+import FlagList from "../components/FlagListComponent";
 import { omit, uuid } from '../utils'
 
 //#region types / enum / interfaces
@@ -293,13 +293,13 @@ export default function CreateTraductionScreen () {
 
 
   return (
-    <div className="h-full flex flex-row">
+    <div className="h-full flex flex-1 flex-row">
       {/** LEFT PANE */}
       <div className="border-r border-gray-100 w-[320px] flex flex-col overflow-auto">
         <div className="flex-1 flex flex-col overflow-auto">
           <div className="p-2">
             <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => importTraductionFile()}>Import</button>
-            <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => addSentence("translate_key")}>{translated["new_sentence_key"]}</button>
+            <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => addSentence("translate_key")}>{translated["new_sentence_key"] || "New sentence key"}</button>
           </div>
           <div className="flex flex-col overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
             {
@@ -339,7 +339,7 @@ export default function CreateTraductionScreen () {
             <div className="flex flex-row border-b border-gray-100">
               <div className="p-2 flex flex-1 flex-col">
                 <label htmlFor="sentenceKey">
-                  {translated["sentence_key"]}
+                  {translated["sentence_key"] || "Sentence Key"}
                 </label>
                 <input
                   name="sentenceKey"
@@ -362,12 +362,14 @@ export default function CreateTraductionScreen () {
             </textarea>
             </div>
 
-            <pre
-            lang="json"
-            className={"border-t p-2 border-gray-100 h-64 overflow-auto"}
-            style={{ height: `320px` }}>
-            {stringifiedLocales}
-            </pre>
+            <div className="border-t flex border-gray-100" style={{ height: "320px" }}>
+              <pre
+              lang="json"
+              className={"p-2 h-64 overflow-auto"}
+              style={{ height: `320px` }}>
+              {stringifiedLocales}
+              </pre>
+            </div>
           </div> :
           <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
             <h1 className="text-9xl py-10">React Translator</h1>
@@ -382,7 +384,7 @@ export default function CreateTraductionScreen () {
             </div>
 
             <div className="text-gray-500 italic my-10">
-              {translated["how_to_start_key"]}
+              {translated["how_to_start_key"] || "Click on new sentence key button to start"}
             </div>
           </div>
         }

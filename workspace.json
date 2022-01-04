@@ -2,6 +2,9 @@
   "version": 2,
   "projects": {
     "react-translator": "libs/react-translator",
+    "react-translator-api": "apps/react-translator-api",
+    "react-translator-api-express": "apps/react-translator-api-express",
+    "react-translator-api-test": "apps/react-translator-api-test",
     "react-translator-front": "apps/react-translator-front",
     "react-translator-front-e2e": "apps/react-translator-front-e2e"
   }

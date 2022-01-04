@@ -21,7 +21,8 @@ const FlagComponent = ({ size, lang }: flagComponentProps) => {
     return (
       <div className="flex flex-col items-center">
         <img
-        src={`https://flagcdn.com/${size}/${typeof lang === "object" ? lang.code : lang }.png`}
+        alt={typeof lang === "object" ? lang.name : "fr"}
+        src={`https://flagcdn.com/${size}/${typeof lang === "object" ? lang.code : "fr" }.png`}
         width={ sizeArray[0] }
         height={ sizeArray[1] }></img>
         {typeof lang === "object" ? lang.name : ""}

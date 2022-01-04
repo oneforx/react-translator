@@ -1,0 +1,14 @@
+{
+  "/api": {
+    "target": "http://localhost:3333",
+    "secure": false
+  },
+  "/react-translator-api-test-api": {
+    "target": "http://localhost:3333",
+    "secure": false
+  },
+  "/react-translator-api-express-api": {
+    "target": "http://localhost:3333",
+    "secure": false
+  }
+}

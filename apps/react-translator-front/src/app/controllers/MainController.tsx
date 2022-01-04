@@ -1,6 +1,6 @@
 import { ReactTranslatorContext } from '@oneforx/react-translator';
 import { useContext, useMemo } from 'react';
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 const MainController = ( ) => {
   const { translated } = useContext(ReactTranslatorContext)
@@ -12,11 +12,11 @@ const MainController = ( ) => {
 
       {/**#region Navbar */}
       <div className={nvBarCn}>
-        <div className="px-2 py-4">React Translator</div>
+        <Link to="/" className="px-2 py-4">React Translator</Link>
         <div className="flex py-2">
-          <div className="py-2 md:px-4">{translated["my_editor_navbar_item_key"] || "My editor"}</div>
-          <button className="underline px-4 py-2 rounded mr-2">Connexion</button>
-          <button className="bg-teal-500 px-4 py-2 text-white rounded">Inscription</button>
+          <Link to="/editor" className="py-2 md:px-4">{translated["my_editor_navbar_item_key"] || "My editor"}</Link>
+          <Link to="/auth/signin" className="underline px-4 py-2 rounded mr-2">Connexion</Link>
+          <Link to="/auth/signup" className="bg-teal-500 px-4 py-2 text-white rounded">Inscription</Link>
         </div>
       </div>
       {/**#endregion */}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FlagList from "../../components/FlagList";
+import FlagList from "../../components/FlagListComponent";
 
 const ChooseLanguageScreen = () => {
   const [ flagSelected, setFlagSelected ] = useState<string>();
