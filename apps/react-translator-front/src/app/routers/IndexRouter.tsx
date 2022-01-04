@@ -30,7 +30,7 @@ const IndexRouter = () => {
         <option value={ctk} key={idx}>{response.data[ctk]}</option>
       );
     }) : null,
-    [response.data, searchLang]
+    [ response.data, searchLang ]
   );
   
   const onSelectLanguageChange = useCallback((e) => {

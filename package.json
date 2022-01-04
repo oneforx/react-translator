@@ -18,7 +18,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nrwl/nest": "13.4.1",
-    "@oneforx/poseidon": "0.1.5",
+    "@oneforx/poseidon": "0.1.6",
     "@types/cors": "^2.8.12",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/react-router-dom": "^5.3.2",

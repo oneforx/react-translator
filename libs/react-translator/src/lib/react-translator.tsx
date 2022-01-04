@@ -2,7 +2,7 @@ import { useLocalState } from "@oneforx/poseidon"
 import React, { createContext, useCallback, useMemo, useState } from "react"
 
 interface ReactTranslatorContextProps {
-  lang: string,
+  lang: string | undefined,
   currentLocale?: Record<string, string>,
   setLang: (lang: string) => void,
   translatePhraseKey: ( phraseKey: string, lang: string, locales: ILocales ) => string | undefined,
@@ -38,7 +38,7 @@ interface IReactTranslatorContextProviderProps {
 }
 
 export const ReactTranslatorContextProvider = ({ locales, children }: IReactTranslatorContextProviderProps) => {
-  const [ lang, setLang ] = useState("fr");
+  const [ lang, setLang ] = useLocalState<string>("lang", "fr");
 
   const availableLangs = useMemo(() => {
     // eslint-disable-next-line prefer-const
@@ -56,11 +56,13 @@ export const ReactTranslatorContextProvider = ({ locales, children }: IReactTran
   const translatePhraseKey = useCallback(( phraseKey: string ): string | undefined => {
     if ( typeof locales === "object" ) {
       if ( locales[phraseKey] !== undefined ) {
-        if (locales[phraseKey][lang] !== undefined) {
-          return locales[phraseKey][lang];
-        } else {
-          return undefined
-        }
+        if (lang !== undefined) {
+          if (locales[phraseKey][lang] !== undefined) {
+            return locales[phraseKey][lang];
+          } else {
+            return undefined
+          }
+        } else return undefined
       } else {
         return undefined
       }

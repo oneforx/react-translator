@@ -6,7 +6,7 @@ interface IAppStates {
 }
 
 interface IAppProps {
-    children: React.ReactNode
+  children: React.ReactNode
 }
 
 const AppContext = createContext<IAppStates>({

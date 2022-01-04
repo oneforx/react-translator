@@ -6,12 +6,14 @@ const EditorController = () => {
   const [ sidebarCollapsed, setSidebarCollapsed ] = useState( true );
 
   const sbCn = useMemo(
-    () => "border-r border-gray-300 flex flex-col"
-  , []);
+    () => "border-r border-gray-300 flex flex-col",
+    []
+  );
 
   const sbItemCn = useMemo(
-    () => "cursor-pointer hover:bg-gray-100 ".concat( sidebarCollapsed ? "px-4 py-2 text-center" : "flex flex-row" )
-  , [ sidebarCollapsed ]);
+    () => "cursor-pointer hover:bg-gray-100 ".concat( sidebarCollapsed ? "px-4 py-2 text-center" : "flex flex-row" ),
+    [ sidebarCollapsed ]
+  );
 
   const SbItemElement = useMemo(
     () => ({ icon, text }: { text: string, icon: string }) => {
@@ -25,7 +27,7 @@ const EditorController = () => {
     <div className="h-full flex">
 
       {/**#region SideBar */}
-      <div className={sbCn} >
+      <div className={sbCn}>
         <SbItemElement icon="x" text="Ofx" />
         <SbItemElement icon="x" text="Ofx" />
       </div>
