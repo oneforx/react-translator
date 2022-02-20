@@ -48,8 +48,8 @@ const IndexRouter = () => {
     <>
       <HashRouter>
         <Routes>
-          
-          <Route path="/" element={ <MainController /> }>
+          <Route path="/" element={ <CreateTraductionScreen /> }/>
+          {/* <Route path="/" element={ <MainController /> }>
             <Route path="" element={ <MainScreen /> } />
             <Route path="settings" element={ <div>Settings</div> } />
             <Route path="auth/signin" element={ <div>Settings</div> } />
@@ -60,7 +60,7 @@ const IndexRouter = () => {
             <Route path="" element={ <EditorMainScreen /> } />
             <Route path="last" element={ <CreateTraductionScreen /> } />
             <Route path=":id" element={ <EditorIdScreen /> } />
-          </Route>
+          </Route> */}
           
         </Routes>
       </HashRouter>

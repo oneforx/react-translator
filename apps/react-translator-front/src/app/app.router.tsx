@@ -47,20 +47,24 @@ const IndexRouter = () => {
   return (
     <>
       <HashRouter>
-
         <Routes>
-          <Route path="/" element={ <MainController /> }>
-            <Route path="" element={ <MainScreen /> } />
-            <Route path="settings" element={ <div>Settings</div> } />
-            <Route path="auth/signin" element={ <div>Settings</div> } />
-            <Route path="auth/signup" element={ <AuthSignupScreen /> } />
-          </Route>
+          <Route path="/" element={ <CreateTraductionScreen /> } />
+          {
+            /*
+            <Route path="/" element={ <MainController /> }>
+              <Route path="" element={ <MainScreen /> } />
+              <Route path="settings" element={ <div>Settings</div> } />
+              <Route path="auth/signin" element={ <div>Settings</div> } />
+              <Route path="auth/signup" element={ <AuthSignupScreen /> } />
+            </Route>
 
-          <Route path="/editor" element={ <EditorController /> }>
-            <Route path="" element={ <EditorMainScreen /> } />
-            <Route path="last" element={ <CreateTraductionScreen /> } />
-            <Route path=":id" element={ <EditorIdScreen /> } />
-          </Route>
+            <Route path="/editor" element={ <EditorController /> }>
+              <Route path="" element={ <EditorMainScreen /> } />
+              <Route path="last" element={ <CreateTraductionScreen /> } />
+              <Route path=":id" element={ <EditorIdScreen /> } />
+            </Route>
+            */
+          }
         </Routes>
 
       </HashRouter>

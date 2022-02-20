@@ -7,22 +7,27 @@ type TwColor =  "red" | "green" | "blue" | "yellow" |
                 "cyan" | "indigo"
 
 interface ITagProps {
+  id: string,
   bgColor?: TwColor,
   bgOpacity?: TwOpacity,
   textColor?: TwColor,
   textOpacity?: TwOpacity,
   textValue?: string,
+  onClick: ((id: string) => void)
   children: string
 }
 
 function Tag ({
+  id,
   textValue,
   bgColor = "red",
   bgOpacity = "500",
   textColor = "red",
   textOpacity = "900",
-  children
+  children,
+  onClick
 }: ITagProps) {
+
   const tagCn = useMemo(() => {
     const txtColor = (textColor === "white" ? "text-white" : "text-"+textColor+"-"+textOpacity)
     const backgroundColor = `bg-${bgColor}-${bgOpacity}`
@@ -31,7 +36,7 @@ function Tag ({
   }, [ textColor, textOpacity, bgColor, bgOpacity ]);
 
   return (
-    <span className={tagCn}>
+    <span className={tagCn} onClick={() => onClick(id)}>
       {textValue || children} x
     </span>
   );

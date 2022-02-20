@@ -178,6 +178,7 @@ export default function CreateTraductionScreen () {
     return typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" ? Object.keys(sentences[currentSentenceId].sentenceTraductions) : []
   }, [ currentSentenceId, sentences ])
   const { translated } = useContext(ReactTranslatorContext)
+  const [ pureLocalesIsShown, setPureLocalesIsShown ] = useState(false);
   //#endregion
 
 
@@ -278,7 +279,7 @@ export default function CreateTraductionScreen () {
   const handleOnClickOnKey = useCallback((ev) => {
     if (ev.keyCode === 32 ) {
       if (Object.keys(sentences).length === 0) {
-        addSentence("undefined");
+        addSentence("new_translate_key");
       }
     }
   }, [ sentences, addSentence ]);
@@ -293,13 +294,14 @@ export default function CreateTraductionScreen () {
 
 
   return (
+    
     <div className="h-full flex flex-1 flex-row">
       {/** LEFT PANE */}
       <div className="border-r border-gray-100 w-[320px] flex flex-col overflow-auto">
         <div className="flex-1 flex flex-col overflow-auto">
           <div className="p-2">
-            <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => importTraductionFile()}>Import</button>
-            <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => addSentence("translate_key")}>{translated["new_sentence_key"] || "New sentence key"}</button>
+            <button className="p-2 mb-2 border border-teal-500 w-full text-teal-500 hover:text-white rounded hover:bg-teal-400" onClick={() => importTraductionFile()}>Import</button>
+            <button className="p-2 mb-2 border border-teal-500 w-full text-teal-500 hover:text-white rounded hover:bg-teal-400" onClick={() => addSentence("translate_key")}>{translated["new_sentence_key"] || "New sentence key"}</button>
           </div>
           <div className="flex flex-col overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
             {
@@ -312,12 +314,12 @@ export default function CreateTraductionScreen () {
             )}
           </div>
         </div>
-        <div className="border-t p-2 border-gray-100">
+        <div className="border-t p-2 border-gray-200">
           <div>
             <input type="text" placeholder="FileName" value={fileName} onChange={(e) => setFileName(e.target.value)} className="p-2 mb-2 rounded border" />
             <span className="px-2">.json</span>
           </div>
-          <button className="bg-teal-600 p-2 text-white rounded w-full" onClick={handleOnClickExport}>EXPORT</button>
+          <button className="bg-teal-500 hover:ring ring-teal-500 hover:bg-teal-600 p-2 text-white rounded w-full " onClick={handleOnClickExport}>EXPORT</button>
         </div>
       </div>
 
@@ -326,49 +328,62 @@ export default function CreateTraductionScreen () {
           <div className="flex-1 flex flex-col">
             <div className="flex flex-1 flex-col overflow-auto">
 
-            {/** FLAG LIST */}
-            <div className="flex overflow-auto pt-16 relative overscroll-auto">
-              <FlagList
-                flagCodesUsedInSentence={flagCodesUsedInSentence}
-                flagSelected={currentSentenceFlagCode}
-                onClickDeleteLanguage={handleOnClickDeleteLanguage}
-                onClickFlag={ handleOnClickFlag }
-              />
-            </div>
-
-            <div className="flex flex-row border-b border-gray-100">
-              <div className="p-2 flex flex-1 flex-col">
-                <label htmlFor="sentenceKey">
-                  {translated["sentence_key"] || "Sentence Key"}
-                </label>
-                <input
-                  name="sentenceKey"
-                  className="border p-2 rounded"
-                  type="text"
-                  value={typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" ? sentences[currentSentenceId].sentenceName : "" }
-                  onChange={handleOnChangeSentenceName}
-                  placeholder="hello_world"
+              {/** FLAG LIST */}
+              <div className="flex overflow-auto pt-16 flex-1 min-h-64 relative overscroll-auto">
+                <FlagList
+                  flagCodesUsedInSentence={flagCodesUsedInSentence}
+                  flagSelected={currentSentenceFlagCode}
+                  onClickDeleteLanguage={handleOnClickDeleteLanguage}
+                  onClickFlag={ handleOnClickFlag }
                 />
               </div>
+
+              <div className="flex flex-row border-b border-gray-100 flex-1">
+                <div className="p-2 flex flex-1 flex-col">
+                  <label htmlFor="sentenceKey">
+                    {translated["sentence_key"] || "Sentence Key"}
+                  </label>
+                  <input
+                    name="sentenceKey"
+                    className="border p-2 rounded mb-2"
+                    type="text"
+                    value={typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" ? sentences[currentSentenceId].sentenceName : "" }
+                    onChange={handleOnChangeSentenceName}
+                    placeholder="hello_world"
+                  />
+                  <textarea
+                    disabled={ !currentSentenceFlagCode }
+                    value={ typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" && currentSentenceFlagCode !== undefined && typeof sentences[currentSentenceId].sentenceTraductions !== "undefined" ? sentences[currentSentenceId].sentenceTraductions[currentSentenceFlagCode] : ""}
+                    onChange={handleOnChangeSentenceContent}
+                    style={{ width: "100%" }}
+                    className="disabled:bg-gray-200 border border-gray-200 disabled:border-gray-300 flex-1 p-2 disabled:p-16 disabled:text-xl disabled:font-bold focus:outline-none"
+                    placeholder={currentSentenceFlagCode ? "Salut le monde" : "Please select a flag to edit"}>
+                  </textarea>
+                </div>
+                <div className="border-t flex flex-col flex-1 pt-4 border-gray-100" style={{ maxHeight: "320px" }}>
+                  <div className="">
+                    <button className={"p-1 border border-gray-200 ".concat(!pureLocalesIsShown ? "bg-gray-200" : "") } onClick={() => setPureLocalesIsShown(false)}>Parsed</button>
+                    <button className={"p-1 border border-gray-200 ".concat(pureLocalesIsShown ? "bg-gray-200" : "") } onClick={() => setPureLocalesIsShown(true)}>Pure</button>
+                  </div>
+                  <div className="border flex-1">
+                    { pureLocalesIsShown ? 
+                      <pre
+                        lang="json"
+                        className={"p-2 overflow-auto"}>
+                        {stringifiedLocales}
+                      </pre>
+                      : <pre
+                        lang="json"
+                        className={"p-2 overflow-auto"}>
+                        {stringifiedParsedLocales}
+                      </pre>
+                    }
+                  </div>
+                </div>
+              </div>
+              
             </div>
 
-            <textarea
-              disabled={ !currentSentenceFlagCode }
-              value={ typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" && currentSentenceFlagCode !== undefined && typeof  sentences[currentSentenceId].sentenceTraductions !== "undefined" ? sentences[currentSentenceId].sentenceTraductions[currentSentenceFlagCode] : ""}
-              onChange={handleOnChangeSentenceContent}
-              style={{ width: "100%", padding: "2px" }}
-              className="disabled:bg-gray-200 p-4 flex-1 border-none active:border-none  focus:outline-none"
-              placeholder={currentSentenceFlagCode ? "Salut le monde" : "Please select a flag to edit"}>
-            </textarea>
-            </div>
-
-            <div className="border-t flex border-gray-100" style={{ maxHeight: "320px" }}>
-              <pre
-              lang="json"
-              className={"p-2 overflow-auto"}>
-              {stringifiedLocales}
-              </pre>
-            </div>
           </div> :
           <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
             <h1 className="text-9xl py-10">React Translator</h1>
