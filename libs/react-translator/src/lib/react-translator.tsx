@@ -1,6 +1,6 @@
 import { useLocalState } from "@oneforx/poseidon"
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react"
-import { useServiceWorker } from "./hooks/use-service-worker"
+import { useServiceWorker } from "./hooks/use-web-worker"
 import translation_worker from "./workers/translation_worker"
 
 

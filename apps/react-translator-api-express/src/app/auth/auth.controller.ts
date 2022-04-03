@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { sign } from 'jsonwebtoken'
+
 const AuthController = Router()
 
 interface AuthInterface {
