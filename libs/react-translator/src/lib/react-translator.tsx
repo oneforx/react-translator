@@ -1,6 +1,5 @@
-import { useLocalState } from "@oneforx/poseidon"
+import { useLocalState, useWebWorker } from "@oneforx/poseidon"
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react"
-import { useServiceWorker } from "./hooks/use-web-worker"
 import translation_worker from "./workers/translation_worker"
 
 
@@ -43,7 +42,7 @@ interface IReactTranslatorContextProviderProps {
 export const ReactTranslatorContextProvider = ({ locales, children }: IReactTranslatorContextProviderProps) => {
   const [ lang, setLang ] = useLocalState<string>("lang", "fr");
   const [ translated, setTranslated ] = useState<Record<string, string>>({});
-  const translationWorker = useServiceWorker(
+  const translationWorker = useWebWorker(
     translation_worker,
     (message: MessageEvent<any>) => {
       if (message.data.title === "onTranslated"){
