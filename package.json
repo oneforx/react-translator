@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build-front": "NX_BASE_HREF=/react-translator/ nx build --prod --baseHref=/react-translator/",
+    "build-front": "set NX_BASE_HREF=/react-translator/ && nx build --prod --baseHref=/react-translator/",
     "build": "nx build",
     "test": "nx test",
     "publish": "pnpm run build react-translator && cd dist/libs/react-translator && npm publish --scope=@oneforx/react-translator --access=public",
@@ -14,6 +14,7 @@
   "dependencies": {
     "@babel/core": ">=7.8.0 <8.0.0",
     "@babel/preset-env": ">=7.0.0 <8.0.0",
+    "@fortawesome/fontawesome-pro": "^6.0.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
@@ -38,7 +39,8 @@
     "rxjs": "^7.0.0",
     "tailwindcss": "^3.0.9",
     "tslib": "^2.0.0",
-    "webpack": ">=5.0.0 <6.0.0"
+    "webpack": ">=5.0.0 <6.0.0",
+    "worker-loader": "^3.0.8"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
@@ -81,4 +83,3 @@
     "typescript": "~4.4.3"
   }
 }
-

@@ -1,5 +1,8 @@
 import { useLocalState } from "@oneforx/poseidon"
-import React, { createContext, useCallback, useMemo, useState } from "react"
+import React, { createContext, useCallback, useEffect, useMemo, useState } from "react"
+import { useServiceWorker } from "./hooks/use-service-worker"
+import translation_worker from "./workers/translation_worker"
+
 
 interface ReactTranslatorContextProps {
   lang: string | undefined,
@@ -39,6 +42,15 @@ interface IReactTranslatorContextProviderProps {
 
 export const ReactTranslatorContextProvider = ({ locales, children }: IReactTranslatorContextProviderProps) => {
   const [ lang, setLang ] = useLocalState<string>("lang", "fr");
+  const [ translated, setTranslated ] = useState<Record<string, string>>({});
+  const translationWorker = useServiceWorker(
+    translation_worker,
+    (message: MessageEvent<any>) => {
+      if (message.data.title === "onTranslated"){
+        setTranslated(message.data.data)
+      };
+    }
+  );
 
   const availableLangs = useMemo(() => {
     // eslint-disable-next-line prefer-const
@@ -69,18 +81,52 @@ export const ReactTranslatorContextProvider = ({ locales, children }: IReactTran
     } else return undefined
   }, [ locales, lang ]);
 
-  const translated = useMemo((): Record<string, string> => {
-    const newObj: Record<string, string> = {}
-    Object.keys(locales).forEach( lk => {
-      const result = translatePhraseKey(lk)
-      if (typeof result === "string") {
-        newObj[lk] = result;
-      }
-    })
-    return newObj
-  }, [ locales, translatePhraseKey ])
+
+  // const translated = useMemo((): Record<string, string> => {
+  //   const newObj: Record<string, string> = {}
+    
+  //   Object.keys(locales).forEach( lk => {
+  //     const result = translatePhraseKey(lk)
+  //     if (typeof result === "string") {
+  //       newObj[lk] = result;
+  //     }
+  //   })
+  //   return newObj
+  // }, [ locales, translatePhraseKey ])
 
 
+  useEffect(() => {
+    if (translationWorker) {
+      translationWorker.postMessage({ title: "init", data: [locales, lang] }) 
+    } else {
+      const newObj: Record<string, string> = {}
+    
+      Object.keys(locales).forEach( lk => {
+        const result = translatePhraseKey(lk)
+        if (typeof result === "string") {
+          newObj[lk] = result;
+        }
+      })
+      setTranslated(newObj)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (translationWorker) {
+      translationWorker.postMessage({ title: "translate", lang })
+    } else {
+        const newObj: Record<string, string> = {}
+    
+        Object.keys(locales).forEach( lk => {
+          const result = translatePhraseKey(lk)
+          if (typeof result === "string") {
+            newObj[lk] = result;
+          }
+        })
+    
+      setTranslated(newObj);
+    }
+  }, [lang]);
   return (
     <ReactTranslatorContext.Provider value={{ lang, setLang, translated, translatePhraseKey, availableLangs }}>{children}</ReactTranslatorContext.Provider>
   );

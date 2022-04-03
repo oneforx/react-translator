@@ -292,6 +292,11 @@ export default function CreateTraductionScreen () {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleWriteClipboard = useCallback( () => {
+    let cb = navigator.clipboard.writeText("npm install @oneforx/react-translator")
+    cb.then((v) => {  });
+    cb.catch((err) => { console.log(err)});
+  }, [])
 
   return (
     
@@ -388,11 +393,11 @@ export default function CreateTraductionScreen () {
           <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
             <h1 className="text-9xl py-10">React Translator</h1>
 
-            <div className="bg-gray-700 text-white rounded px-5 py-2">
+            <div className="bg-gray-700 text-white rounded px-2 py-2 flex">
               <pre lang="bash" className="text-xl">
                 npm install @oneforx/react-translator
               </pre>
-              <div>
+              <div className="px-2 hover:cursor-pointer" onClick={handleWriteClipboard}>
                 <i className="fad fa-copy"></i>
               </div>
             </div>
