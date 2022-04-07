@@ -21,14 +21,14 @@ const EditorMainScreen = () => {
   }, [projectName])
   
   return (
-    <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
-      <h1 className="text-9xl py-10">React Translator</h1>
+    <div className="dark:bg-gray-900 flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
+      <h1 className="text-9xl py-10 text-center dark:text-white">React Translator</h1>
 
-      <div className="bg-gray-700 text-white rounded px-5 py-2">
+      <div className="bg-gray-700 text-white rounded px-2 py-2 flex">
         <pre lang="bash" className="text-xl">
           npm install @oneforx/react-translator
         </pre>
-        <div>
+        <div className="px-2 hover:cursor-pointer">
           <i className="fad fa-copy"></i>
         </div>
       </div>

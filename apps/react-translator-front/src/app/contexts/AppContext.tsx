@@ -1,8 +1,9 @@
 import { useLocalState } from "@oneforx/poseidon";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 
 interface IAppStates {
-  hi: ""
+  darkTheme?: boolean,
+  setDarkTheme: ((newValue: boolean) => void)
 }
 
 interface IAppProps {
@@ -10,13 +11,26 @@ interface IAppProps {
 }
 
 const AppContext = createContext<IAppStates>({
-  hi: ""
+  darkTheme: false,
+  setDarkTheme: (newValue: boolean) => {}
 });
 
 const AppContextProvider = ({ children }: IAppProps) => {
-    const [ lang, setLang ] = useLocalState("lang", "fr")
+    const [ darkTheme, setDarkTheme ] = useLocalState("dark", false);
+
+    useEffect(() => {
+      if (darkTheme || (!('dark' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    }, [darkTheme]);
+    
     return (
-        <AppContext.Provider value={{ hi: "" }}>
+        <AppContext.Provider value={{
+          darkTheme,
+          setDarkTheme
+        }}>
             { children }
         </AppContext.Provider>
     );

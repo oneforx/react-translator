@@ -10,7 +10,7 @@
       "options": {
         "outputPath": "dist/apps/react-translator-front",
         "index": "apps/react-translator-front/src/index.html",
-        "baseHref": "/",
+        "baseHref": "/react-translator/",
         "main": "apps/react-translator-front/src/main.tsx",
         "polyfills": "apps/react-translator-front/src/polyfills.ts",
         "tsConfig": "apps/react-translator-front/tsconfig.app.json",

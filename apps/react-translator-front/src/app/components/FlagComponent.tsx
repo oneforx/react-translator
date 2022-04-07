@@ -19,7 +19,7 @@ const FlagComponent = ({ size, lang }: flagComponentProps) => {
     const sizeArray = size.split("x").map(s => Number.parseInt(s));
 
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center dark:text-white">
         <img
         alt={typeof lang === "object" ? lang.name : "fr"}
         src={`https://flagcdn.com/${size}/${typeof lang === "object" ? lang.code : "fr" }.png`}

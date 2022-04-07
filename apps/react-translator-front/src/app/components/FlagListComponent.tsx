@@ -35,7 +35,7 @@ const FlagList = ({
       return (
         <div
           key={idx}
-          className={["m-2 p-2 relative"].concat([typeof flagCodesUsedInSentence !== "undefined" && flagCodesUsedInSentence.includes(ctk) ? "border border-black" : "", flagSelected === ctk ? "bg-gray-200" : ""]).join(" ").trimEnd()}
+          className={["m-2 p-2 relative rounded-xl cursor-pointer"].concat([typeof flagCodesUsedInSentence !== "undefined" && flagCodesUsedInSentence.includes(ctk) ? "border border-black" : "", flagSelected === ctk ? "bg-gray-900" : ""]).join(" ").trimEnd()}
           onClick={() => onClickFlag(flagSelected === ctk ? "" : ctk)}>
             { flagCodesUsedInSentence !== undefined  && flagCodesUsedInSentence.includes(ctk) ? <span onClick={() => onClickDeleteLanguage(ctk)} className="absolute top-0 left-0 bg-red-600 cursor-pointer px-1 w-5 h-5 text-center items-center justify-items-center text-white text-xs rounded-full">x</span> : null }
           <FlagComponent lang={{ code: ctk, name: response.data[ctk] }} size="64x48" />
@@ -52,9 +52,9 @@ const FlagList = ({
 
   if ( response.isLoading ) return <p>FlagList is loading</p>
   else return (
-    <div className="p-2 flex flex-1 flex-col h-full flex-wrap flex-grow overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
-      <div className="p-2 absolute top-0 left-4 flex items-center">
-        <input className="p-2 border" placeholder="fr,france" value={searchFlag} onChange={handleSearchFlagChange}></input>
+    <div className="p-2 flex flex-col flex-wrap flex-grow overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
+      <div className="p-2 absolute top-0 left-1 flex items-center">
+        <input className="p-2 border dark:bg-gray-900 dark:border-gray-800 rounded-xl dark:text-white" placeholder="fr,france" value={searchFlag} onChange={handleSearchFlagChange}></input>
         <Tag id="used" bgColor="red" bgOpacity="900" onClick={(tag) => tags.filter(tag => tag !== "used").length > 0 ? tags.filter(tag => tag !== "used") : setTags([...tags, tag])}>Used</Tag>
       </div>
       {flagList}

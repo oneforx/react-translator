@@ -8,7 +8,7 @@ const MainController = ( ) => {
   const nvItemCn = useMemo(() => "", []);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col dark:bg-gray-900 dark:text-white">
 
       {/**#region Navbar */}
       <div className={nvBarCn}>

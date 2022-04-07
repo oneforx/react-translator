@@ -3,11 +3,15 @@ import { ReactTranslatorContext } from '@oneforx/react-translator';
 import useGetLangs from 'libs/react-translator/src/lib/hooks/use-get-langs';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { Routes, Route, HashRouter } from 'react-router-dom';
+import AuthController from '../controllers/AuthController';
 
 import EditorController from '../controllers/EditorController';
 import MainController from '../controllers/MainController';
+import AuthScreen from '../screens/auth/AuthScreen';
+import AuthSigninScreen from '../screens/auth/AuthSigninScreen';
 import AuthSignupScreen from '../screens/auth/AuthSignupScreen';
 import CreateTraductionScreen from '../screens/CreateTraductionScreen';
+import EditorCreateProjectScreen from '../screens/editor/EditorCreateProjectScreen';
 import EditorIdScreen from '../screens/editor/EditorIdScreen';
 import EditorMainScreen from '../screens/editor/EditorMainScreen';
 import MainScreen from '../screens/main/MainScreen';
@@ -48,20 +52,24 @@ const IndexRouter = () => {
     <>
       <HashRouter>
         <Routes>
-          <Route path="/" element={ <CreateTraductionScreen /> }/>
-          {/* <Route path="/" element={ <MainController /> }>
+          {/* <Route path="/" element={ <CreateTraductionScreen /> }/> */}
+          
+          <Route path="/" element={ <MainController /> }>
             <Route path="" element={ <MainScreen /> } />
             <Route path="settings" element={ <div>Settings</div> } />
-            <Route path="auth/signin" element={ <div>Settings</div> } />
-            <Route path="auth/signup" element={ <AuthSignupScreen /> } />
+            <Route path="/auth" element={ <AuthController /> }>
+              <Route path="" element={ <AuthScreen />} />
+              <Route path="signup" element={ <AuthSignupScreen />}/>
+              <Route path="signin" element={ <AuthSigninScreen />} />
+            </Route>
           </Route>
 
           <Route path="/editor" element={ <EditorController /> }>
             <Route path="" element={ <EditorMainScreen /> } />
             <Route path="last" element={ <CreateTraductionScreen /> } />
+            <Route path="create" element={ <EditorCreateProjectScreen /> } />
             <Route path=":id" element={ <EditorIdScreen /> } />
-          </Route> */}
-          
+          </Route>          
         </Routes>
       </HashRouter>
       

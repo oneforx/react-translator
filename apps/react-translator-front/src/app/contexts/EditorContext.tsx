@@ -1,10 +1,15 @@
 import { createContext, useCallback, useEffect, useReducer, useState } from "react";
-import { TProject } from "../../types";
+import { ISentences, TProject } from "../../types";
 
 interface IEditorProviderStates {
-  currentProjectsId: Array<string>, // Openned
+  currentProjectId: string, // Openned
   projects: Record<string, TProject>,
-  addProject: ( (projectId: string, projectData?: TProject ) => void )
+  addProject: ( (projectId: string, projectData?: {
+    currentSentenceId?: string,
+    currentSentenceFlagCode?: string,
+    sentences?: ISentences
+  } ) => void ),
+  selectProjectId: (( projectId: string) => void)
   deleteProject: ( (projectId: string) => void ),
   modifyProject: ( (projectId: string, projectData: TProject ) => void )
 }
@@ -15,12 +20,14 @@ interface IEditorProps {
 
 const editorInitialState: IEditorProviderStates = {
   projects: {},
-  currentProjectsId: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  addProject: ( (projectId: string, projectData?: TProject ) => {}),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  currentProjectId: "",
+  addProject: ( (projectId: string, projectData?: {
+    currentSentenceId?: string,
+    currentSentenceFlagCode?: string,
+    sentences?: ISentences
+  } ) => {}),
+  selectProjectId: ( (projectId: string) => {}),
   deleteProject: ( (projectId: string) => {}),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   modifyProject: ( (projectId: string, projectData: TProject ) => {})
 }
 
@@ -51,19 +58,26 @@ const editorReducer = (
       if ( typeof action.payload.projectId === "string") {
         return {
           ...state,
-          currentProjectsId: [ ...state.currentProjectsId, action.payload.projectId],
-        };
-      } else return state;
-    }
-    case EditorActionTypes.REMOVE_PROJECT_ID: {
-      if ( typeof action.payload.projectId === "string") {
-        return {
-          ...state,
-          currentProjectsId: state.currentProjectsId.filter( cp => cp !== action.payload.projectId ),
+          currentProjectId: action.payload.projectId,
         };
       } else return state;
     }
     case EditorActionTypes.ADD_PROJECT: {
+      if ( typeof action.payload.projectId === "string") {
+        return {
+          ...state,
+          projects: {
+            ...state.projects,
+            [action.payload.projectId]: action.payload.projectData || {
+              currentSentenceId: "",
+              currentSentenceFlagCode: "",
+              sentences: {}
+            }
+          }
+        }
+      } else return state;
+    }
+    case EditorActionTypes.MODIFY_PROJECT: {
       if ( typeof action.payload.projectId === "string") {
         return {
           ...state,
@@ -101,11 +115,13 @@ const EditorContextProvider = ({ children }: IEditorProps) => {
     editorDispatch({ type: EditorActionTypes.DELETE_PROJECT, payload: { projectId } })
   }, []);
 
-  const modifyProject = useCallback(( projectId: string, projectData ) => {
-    if (projectData as TProject) {
-      editorDispatch({ type: EditorActionTypes.ADD_PROJECT, payload: { projectId, projectData } })
-    }
+  const modifyProject = useCallback(( projectId: string, projectData: TProject ) => {
+    editorDispatch({ type: EditorActionTypes.MODIFY_PROJECT, payload: { projectId, projectData } })
   }, []);
+
+  const selectProjectId = useCallback((projectId: string) => {
+    editorDispatch({ type: EditorActionTypes.SET_PROJECT_ID, payload: { projectId }})
+  }, [])
 
   useEffect(() => {
     console.log(editorState.projects)
@@ -113,10 +129,11 @@ const EditorContextProvider = ({ children }: IEditorProps) => {
 
   return (
     <EditorContext.Provider value={{
-      currentProjectsId: editorState.currentProjectsId,
+      currentProjectId: editorState.currentProjectId,
       projects: editorState.projects,
       addProject,
       modifyProject,
+      selectProjectId,
       deleteProject
     }}>{ children }</EditorContext.Provider>
   );

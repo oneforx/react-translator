@@ -5,6 +5,7 @@
   import { useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
   import { EditorContext } from "../../contexts/EditorContext";
   import { ReactTranslatorContext } from "@oneforx/react-translator";
+import { useLocalState } from "@oneforx/poseidon";
 
   enum TraductorConstants {
   ADD_SENTENCE,
@@ -168,19 +169,31 @@ const traductorReducer = (
 }
 
 const EditorIdScreen = () => {
+  const [ oldId, setOldId ] = useLocalState("oldId");
   const { id } = useParams()
+  useEffect(() => {
+    setOldId(id);
+  }, [])
   const { projects, modifyProject } = useContext(EditorContext);
   //#region STATES
   const [
     { currentSentenceId, sentences, currentSentenceFlagCode },
     dispatch
-  ] = useReducer(traductorReducer, projects[id || ""] || initialState);
+  ] = useReducer(traductorReducer, projects[id || ""]);
+  
+  useEffect(() => {
+    if (id === oldId) {
+      modifyProject(id as string, { currentSentenceFlagCode: currentSentenceFlagCode || "", sentences, currentSentenceId: currentSentenceId || "" })
+    }
+  }, [ currentSentenceFlagCode, sentences, currentSentenceId, id ])
+  
   const [ fileName, setFileName ] = useState("traductions")
   const flagCodesUsedInSentence = useMemo(() => {
     return typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" ? Object.keys(sentences[currentSentenceId].sentenceTraductions) : []
   }, [ currentSentenceId, sentences ])
   const { translated } = useContext(ReactTranslatorContext)
-
+  const [ pureLocalesIsShown, setPureLocalesIsShown ] = useState(false);
+  //#endregion
 
   //#region CALLBACKS
   const addSentence = useCallback(( sN: string ) => {
@@ -215,6 +228,7 @@ const EditorIdScreen = () => {
       payload: { sentenceContent: e.target.value }
     })
   }, []);
+  //#endregion
 
   //#region OTHERS
   const handleOnClickFlag = useCallback(( ctk: string ) => {
@@ -292,6 +306,11 @@ const EditorIdScreen = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleWriteClipboard = useCallback( () => {
+    let cb = navigator.clipboard.writeText("npm install @oneforx/react-translator")
+    cb.then((v) => {  });
+    cb.catch((err) => { console.log(err)});
+  }, [])
   const handleOnClickSave = useCallback((ev) => {
     if (Object.keys(sentences).length === 0) {
       if (id) {
@@ -300,93 +319,104 @@ const EditorIdScreen = () => {
     }
   }, [ currentSentenceFlagCode, currentSentenceId, sentences, modifyProject ]);
 
-  return  projects[id || ""] ? (
-    <div className="h-full flex flex-1 flex-row">
+  return projects[id || ""] ? (
+    <div className="h-full flex flex-1 flex-row dark:bg-gray-800">
       {/** LEFT PANE */}
-      <div className="border-r border-gray-100 w-[320px] flex flex-col overflow-auto">
+      <div className="border-r border-gray-100 w-[320px] flex flex-col overflow-auto dark:border-gray-900">
         <div className="flex-1 flex flex-col overflow-auto">
           <div className="p-2">
-            <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => importTraductionFile()}>Import</button>
-            <button className="p-2 mb-2 border border-gray-50 bg-gray-500 w-full text-white rounded" onClick={() => addSentence("translate_key")}>{translated["new_sentence_key"] || "New sentence key"}</button>
+            <button className="p-2 mb-2 border border-teal-500 w-full text-teal-500 hover:text-white rounded hover:bg-teal-400" onClick={() => importTraductionFile()}>Import</button>
+            <button className="p-2 mb-2 border border-teal-500 w-full text-teal-500 hover:text-white rounded hover:bg-teal-400" onClick={() => addSentence("translate_key")}>{translated["new_sentence_key"] || "New sentence key"}</button>
           </div>
           <div className="flex flex-col overflow-auto scrollbar scrollbar-thumb-teal-500 scrollbar-track-teal-50">
             {
               Object.keys(sentences).map((v, idx) => <li
                 key={v}
-                className={[ "p-2", "flex flex-row justify-between cursor-pointer", currentSentenceId === v ? "font-bold bg-gray-100" : "", idx % 2 === 0 ? "bg-gray-50" : ""].join(" ") }
+                className={[ "p-2", "flex flex-row justify-between cursor-pointer dark:text-white", currentSentenceId === v ? "font-bold bg-gray-100 dark:bg-gray-900 dark:text-white" : "", idx % 2 === 0 ? "bg-gray-50 dark:bg-gray-600" : "dark:bg-gray-700"].join(" ") }
                 onClick={() => dispatch({ type: TraductorConstants.SELECT_SENTENCE, payload: v })}>
                   <span className="truncate">{sentences[v].sentenceName}</span> <button className="px-2" onClick={() => deleteSentence(v)}>x</button>
               </li>
             )}
           </div>
         </div>
-        <div className="border-t p-2 border-gray-100">
+        <div className="border-t p-2 border-gray-200 dark:border-gray-900">
           <div>
-            <input type="text" placeholder="FileName" value={fileName} onChange={(e) => setFileName(e.target.value)} className="p-2 mb-2 rounded border" />
-            <span className="px-2">.json</span>
+            <input type="text" placeholder="FileName" value={fileName} onChange={(e) => setFileName(e.target.value)} className="p-2 mb-2 rounded border dark:bg-gray-700 dark:text-white dark:border-gray-800" />
+            <span className="px-2 dark:text-white text-center">.json</span>
           </div>
-          <button className="bg-teal-600 p-2 text-white rounded w-full" onClick={handleOnClickExport}>EXPORT</button>
-        <button className="bg-teal-600 p-2 text-white rounded w-full" onClick={handleOnClickSave}>SAVE</button>
+          <button className="bg-teal-500 hover:ring ring-teal-500 hover:bg-teal-600 p-2 text-white rounded w-full " onClick={handleOnClickExport}>EXPORT</button>
         </div>
       </div>
-
         {
           currentSentenceId ?
           <div className="flex-1 flex flex-col">
             <div className="flex flex-1 flex-col overflow-auto">
 
-            {/** FLAG LIST */}
-            <div className="flex overflow-auto pt-16 relative overscroll-auto">
-              <FlagList
-                flagCodesUsedInSentence={flagCodesUsedInSentence}
-                flagSelected={currentSentenceFlagCode}
-                onClickDeleteLanguage={handleOnClickDeleteLanguage}
-                onClickFlag={ handleOnClickFlag }
-              />
-            </div>
-
-            <div className="flex flex-row border-b border-gray-100">
-              <div className="p-2 flex flex-1 flex-col">
-                <label htmlFor="sentenceKey">
-                  {translated["sentence_key"] || "Sentence Key"}
-                </label>
-                <input
-                  name="sentenceKey"
-                  className="border p-2 rounded"
-                  type="text"
-                  value={typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" ? sentences[currentSentenceId].sentenceName : "" }
-                  onChange={handleOnChangeSentenceName}
-                  placeholder="hello_world"
+              {/** FLAG LIST */}
+              <div className="flex overflow-auto pt-16 flex-1 min-h-64 relative overscroll-auto">
+                <FlagList
+                  flagCodesUsedInSentence={flagCodesUsedInSentence}
+                  flagSelected={currentSentenceFlagCode}
+                  onClickDeleteLanguage={handleOnClickDeleteLanguage}
+                  onClickFlag={ handleOnClickFlag }
                 />
               </div>
+
+              <div className="flex flex-row flex-1">
+                <div className="p-2 flex flex-1 flex-col">
+                  <label htmlFor="sentenceKey" className="dark:text-white">
+                    {translated["sentence_key"] || "Sentence Key"}
+                  </label>
+                  <input
+                    name="sentenceKey"
+                    className="border p-2 rounded-md mb-2 dark:bg-gray-900 dark:text-white dark:border-gray-800"
+                    type="text"
+                    value={typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" ? sentences[currentSentenceId].sentenceName : "" }
+                    onChange={handleOnChangeSentenceName}
+                    placeholder="hello_world"
+                  />
+                  <textarea
+                    disabled={ !currentSentenceFlagCode }
+                    value={ typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" && currentSentenceFlagCode !== undefined && typeof sentences[currentSentenceId].sentenceTraductions !== "undefined" ? sentences[currentSentenceId].sentenceTraductions[currentSentenceFlagCode] : ""}
+                    onChange={handleOnChangeSentenceContent}
+                    style={{ width: "100%" }}
+                    className="disabled:bg-gray-200 border border-gray-200 dark:bg-gray-900 dark:border-gray-800 rounded-md disabled:border-gray-300 flex-1 p-2 disabled:p-16 disabled:text-xl disabled:font-bold focus:outline-none"
+                    placeholder={currentSentenceFlagCode ? "Salut le monde" : "Please select a flag to edit"}>
+                  </textarea>
+                </div>
+                <div className="flex flex-col flex-1 p-2" style={{ maxHeight: "320px" }}>
+                  <div className="">
+                    <button className={"p-1 border-t-2 border-l-2 rounded-tl border-gray-200 dark:border-gray-700 dark:text-white ".concat(!pureLocalesIsShown ? "bg-gray-700" : "") } onClick={() => setPureLocalesIsShown(false)}>Parsed</button>
+                    <button className={"p-1 border-t-2 border-r-2 rounded-tr border-gray-200 dark:border-gray-700 dark:text-white ".concat(pureLocalesIsShown ? "bg-gray-700" : "") } onClick={() => setPureLocalesIsShown(true)}>Pure</button>
+                  </div>
+                  <div className="border flex-1 dark:border-gray-800 dark:bg-gray-900 dark:text-white rounded">
+                    { pureLocalesIsShown ? 
+                      <pre
+                        lang="json"
+                        className={"p-2 overflow-auto"}>
+                        {stringifiedLocales}
+                      </pre>
+                      : <pre
+                        lang="json"
+                        className={"p-2 overflow-auto"}>
+                        {stringifiedParsedLocales}
+                      </pre>
+                    }
+                  </div>
+                </div>
+              </div>
+              
             </div>
 
-            <textarea
-              disabled={ !currentSentenceFlagCode }
-              value={ typeof currentSentenceId !== "undefined" && typeof sentences[currentSentenceId] !== "undefined" && currentSentenceFlagCode !== undefined && typeof  sentences[currentSentenceId].sentenceTraductions !== "undefined" ? sentences[currentSentenceId].sentenceTraductions[currentSentenceFlagCode] : ""}
-              onChange={handleOnChangeSentenceContent}
-              style={{ width: "100%", padding: "2px" }}
-              className="disabled:bg-gray-200 p-4 flex-1 border-none active:border-none  focus:outline-none"
-              placeholder={currentSentenceFlagCode ? "Salut le monde" : "Please select a flag to edit"}>
-            </textarea>
-            </div>
-
-            <div className="border-t flex border-gray-100" style={{ maxHeight: "320px" }}>
-              <pre
-              lang="json"
-              className={"p-2 overflow-auto"}>
-              {stringifiedLocales}
-              </pre>
-            </div>
           </div> :
           <div className="flex-1 flex flex-col items-center content-center justify-items-center justify-self-center justify-center">
-            <h1 className="text-9xl py-10">React Translator</h1>
+            <h1 className="text-9xl py-10 text-center dark:text-white">React Translator</h1>
 
-            <div className="bg-gray-700 text-white rounded px-5 py-2">
+            <div className="bg-gray-700 text-white rounded px-2 py-2 flex">
               <pre lang="bash" className="text-xl">
                 npm install @oneforx/react-translator
               </pre>
-              <div>
+              <div className="px-2 hover:cursor-pointer" onClick={handleWriteClipboard}>
                 <i className="fad fa-copy"></i>
               </div>
             </div>
