@@ -277,21 +277,21 @@ export default function CreateTraductionScreen () {
     });
   }, []);
 
-  const handleOnClickOnKey = useCallback((ev) => {
-    if (ev.keyCode === 32 ) {
-      if (Object.keys(sentences).length === 0) {
-        addSentence("new_translate_key");
-      }
-    }
-  }, [ sentences, addSentence ]);
+  // const handleOnClickOnKey = useCallback((ev) => {
+  //   if (ev.keyCode === 32 ) {
+  //     if (Object.keys(sentences).length === 0) {
+  //       addSentence("new_translate_key");
+  //     }
+  //   }
+  // }, [ sentences, addSentence ]);
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleOnClickOnKey);
-    return () => {
-      window.removeEventListener("keydown", handleOnClickOnKey);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener("keydown", handleOnClickOnKey, false);
+  //   return () => {
+  //     window.removeEventListener("keydown", handleOnClickOnKey, false);
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const handleWriteClipboard = useCallback( () => {
     const cb = navigator.clipboard.writeText("npm install @oneforx/react-translator")
