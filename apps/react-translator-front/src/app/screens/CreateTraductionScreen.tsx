@@ -294,8 +294,8 @@ export default function CreateTraductionScreen () {
   }, [])
 
   const handleWriteClipboard = useCallback( () => {
-    let cb = navigator.clipboard.writeText("npm install @oneforx/react-translator")
-    cb.then((v) => {  });
+    const cb = navigator.clipboard.writeText("npm install @oneforx/react-translator")
+    cb.then((v) => {  console.log(v) });
     cb.catch((err) => { console.log(err)});
   }, [])
 
@@ -375,12 +375,12 @@ export default function CreateTraductionScreen () {
                     { pureLocalesIsShown ? 
                       <pre
                         lang="json"
-                        className={"p-2 overflow-auto"} style={{ whiteSpace: "pre-wrap"}}>
+                        className={"p-2 overflow-auto"}>
                         {stringifiedLocales}
                       </pre>
                       : <pre
                         lang="json"
-                        className={"p-2 overflow-auto"} style={{ whiteSpace: "pre-wrap"}}>
+                        className={"p-2 overflow-auto"}>
                         {stringifiedParsedLocales}
                       </pre>
                     }
