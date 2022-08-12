@@ -375,12 +375,12 @@ export default function CreateTraductionScreen () {
                     { pureLocalesIsShown ? 
                       <pre
                         lang="json"
-                        className={"p-2 overflow-auto"}>
+                        className={"p-2 overflow-auto"} style={{ whiteSpace: "pre-wrap"}}>
                         {stringifiedLocales}
                       </pre>
                       : <pre
                         lang="json"
-                        className={"p-2 overflow-auto"}>
+                        className={"p-2 overflow-auto"} style={{ whiteSpace: "pre-wrap"}}>
                         {stringifiedParsedLocales}
                       </pre>
                     }
